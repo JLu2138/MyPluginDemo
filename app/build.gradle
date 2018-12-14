@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+
     defaultConfig {
         applicationId "com.example.lujun858.myplugindemo"
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -19,10 +20,6 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha3'
-    implementation project(':mypluginlibrary')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':mypluginlibrary')
 }

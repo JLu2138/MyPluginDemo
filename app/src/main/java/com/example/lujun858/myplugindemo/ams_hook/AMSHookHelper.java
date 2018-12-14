@@ -2,7 +2,7 @@ package com.example.lujun858.myplugindemo.ams_hook;
 
 import android.os.Handler;
 
-import com.example.lujun858.myplugindemo.RefInvoke;
+import com.example.mypluginlibrary.RefInvoke;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;

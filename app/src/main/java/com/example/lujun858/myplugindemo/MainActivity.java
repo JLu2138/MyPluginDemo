@@ -5,17 +5,21 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.mypluginlibrary.RefInvoke;
 
 public class MainActivity extends Activity {
     private TextView jumpBtn;
+    private ImageView imgView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        jumpBtn = findViewById(R.id.btn_jump2_plugin_activity);
+        jumpBtn = (TextView) findViewById(R.id.btn_jump2_plugin_activity);
         jumpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -28,5 +32,16 @@ public class MainActivity extends Activity {
                 startActivity(t);
             }
         });
+
+      /*  imgView = (ImageView) findViewById(R.id.img);
+        int imgId = 0;
+        try {
+            Class drawableClass = getClassLoader().loadClass("com.example.plugin1.R$drawable");
+            imgId = (int) RefInvoke.getStaticFieldObject(drawableClass, "plugin");
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        imgView.setImageDrawable(getApplicationContext().getDrawable(imgId));*/
     }
 }

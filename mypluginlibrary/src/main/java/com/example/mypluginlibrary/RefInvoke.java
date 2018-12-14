@@ -1,4 +1,4 @@
-package com.example.lujun858.myplugindemo;
+package com.example.mypluginlibrary;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

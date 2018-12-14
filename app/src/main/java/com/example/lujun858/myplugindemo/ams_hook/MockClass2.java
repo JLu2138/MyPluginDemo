@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 
-import com.example.lujun858.myplugindemo.RefInvoke;
+import com.example.mypluginlibrary.RefInvoke;
 
 class MockClass2 implements Handler.Callback {
 

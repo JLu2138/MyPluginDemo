@@ -1,18 +1,30 @@
-apply plugin: 'com.android.application'
+import com.android.sdklib.BuildToolInfo
 
+import java.lang.reflect.Method
+
+apply plugin: 'com.android.application'
+Task modifyAaptPathTask = task('modifyAaptPath') << {
+    android.applicationVariants.all { variant ->
+        BuildToolInfo buildToolInfo = variant.androidBuilder.getTargetInfo().getBuildTools()
+        Method addMethod = BuildToolInfo.class.getDeclaredMethod("add", BuildToolInfo.PathId.class, File.class)
+        addMethod.setAccessible(true)
+        addMethod.invoke(buildToolInfo, BuildToolInfo.PathId.AAPT, new File(rootDir, "aapt_mac"))
+        println "[LOG] new aapt path = " + buildToolInfo.getPath(BuildToolInfo.PathId.AAPT)
+    }
+}
 android {
-    compileSdkVersion 28
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
 
 
 
     defaultConfig {
         applicationId "com.example.plugin1"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
 
@@ -22,17 +34,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    //    修改aapt 命名
+    preBuild.doFirst {
+        modifyAaptPathTask.execute()
+    }
 
+//    自定义 aapt 参数
+    aaptOptions {
+        aaptOptions.additionalParameters '--PLUG-resoure-id', '0x71'
+    }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha3'
-    implementation project(':mypluginlibrary')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':mypluginlibrary')
 }
+
+
 
 assemble.doLast {
     android.applicationVariants.all { variant ->
@@ -50,3 +72,4 @@ assemble.doLast {
         }
     }
 }
+
