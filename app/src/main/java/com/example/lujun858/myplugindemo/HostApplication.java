@@ -2,21 +2,19 @@ package com.example.lujun858.myplugindemo;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.res.AssetManager;
-import android.content.res.Resources;
-import android.util.Log;
 
 import com.example.lujun858.myplugindemo.ams_hook.AMSHookHelper;
 
-import java.io.File;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class HostApplication extends Application {
 
 
     private static Context sContext;
     private String apkName = "plugin1.apk";    //apk名称
+
+    public static HashMap<String, String> pluginActiviesMap = new HashMap<>();
+
 
 
     @Override
@@ -35,6 +33,9 @@ public class HostApplication extends Application {
 
             PluginManager.init(this);
 
+            //get json data from server
+            mockData();
+
             //hook AMN
             AMSHookHelper.hookAMN();
             //hook ActivityThread
@@ -46,6 +47,10 @@ public class HostApplication extends Application {
         }
     }
 
+
+    void mockData() {
+        pluginActiviesMap.put("com.example.plugin1.MainActivity", "com.example.lujun858.myplugindemo.stub.SingleTaskActivity1");
+    }
 
     public static Context getContext() {
         return sContext;

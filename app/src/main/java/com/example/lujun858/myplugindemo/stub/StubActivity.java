@@ -1,4 +1,4 @@
-package com.example.lujun858.myplugindemo;
+package com.example.lujun858.myplugindemo.stub;
 
 import android.app.Activity;
 

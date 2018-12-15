@@ -14,9 +14,10 @@ import java.util.List;
 
 public class PluginManager {
 
+    //插件信息的集合
     public final static List<PluginItem> plugins = new ArrayList<>();
 
-    //正在使用的Resources
+    //正在使用的Resources，作为全局新 Resource 使用
     public static volatile Resources mNowResources;
 
     //原始的application中的BaseContext，不能是其他的，否则会内存泄漏

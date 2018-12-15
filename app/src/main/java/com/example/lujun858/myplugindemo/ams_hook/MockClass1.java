@@ -4,7 +4,8 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.lujun858.myplugindemo.StubActivity;
+import com.example.lujun858.myplugindemo.HostApplication;
+import com.example.lujun858.myplugindemo.stub.StubActivity;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -13,6 +14,9 @@ import java.lang.reflect.Method;
 class MockClass1 implements InvocationHandler {
 
     private static final String TAG = "MockClass1";
+
+    // 替身StubActivity的包名, 也就是我们自己的包名
+    private static final String STUB_ACTIVITY_PACKAGENAME = "com.example.lujun858.myplugindemo";
 
     Object mBase;
 
@@ -43,12 +47,21 @@ class MockClass1 implements InvocationHandler {
 
             Intent newIntent = new Intent();
 
-            // 替身Activity的包名, 也就是我们自己的包名
-            String stubPackage = "com.example.lujun858.myplugindemo";
 
-            // 这里我们把启动的Activity临时替换为 StubActivity
-            ComponentName componentName = new ComponentName(stubPackage, StubActivity.class.getName());
+            // 这里我们把启动的Activity临时替换为 StubActivity, 查询映射表找到插件 Activity 对应的 LaunchModeActivity，没有就默认使用 StubActivity
+            ComponentName componentName;
+
+            String rawClass = raw.getComponent().getClassName();
+            if(HostApplication.pluginActiviesMap.containsKey(rawClass)) {
+                String activity = HostApplication.pluginActiviesMap.get(rawClass);
+                componentName = new ComponentName(STUB_ACTIVITY_PACKAGENAME, activity);
+            } else {
+                componentName = new ComponentName(STUB_ACTIVITY_PACKAGENAME, StubActivity.class.getName());
+            }
             newIntent.setComponent(componentName);
+
+
+
 
             // 把我们原始要启动的TargetActivity先存起来
             newIntent.putExtra(AMSHookHelper.EXTRA_TARGET_INTENT, raw);

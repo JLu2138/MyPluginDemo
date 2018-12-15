@@ -5,13 +5,11 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.example.mypluginlibrary.RefInvoke;
 
 public class MainActivity extends Activity {
-    private TextView jumpBtn;
+    private Button jumpBtn;
     private ImageView imgView;
 
     @Override
@@ -19,7 +17,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        jumpBtn = (TextView) findViewById(R.id.btn_jump2_plugin_activity);
+        jumpBtn = (Button) findViewById(R.id.btn_jump2_plugin_activity);
         jumpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
