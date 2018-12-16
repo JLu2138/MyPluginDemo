@@ -22,6 +22,7 @@ public class TestActivity1 extends BasePluginActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TestActivity1.this, MainActivity.class);
+                intent.putExtra("msg", "这是一条来自 plugin1：TestActivity1 的消息！");
                 startActivity(intent);
             }
         });

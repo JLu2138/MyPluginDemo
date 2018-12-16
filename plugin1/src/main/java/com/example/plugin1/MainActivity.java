@@ -2,19 +2,23 @@ package com.example.plugin1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.mypluginlibrary.BasePluginActivity;
 
 public class MainActivity extends BasePluginActivity {
     private ImageView imageView;
     private Button btnJump;
+    private TextView subTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("JLu", "plugin: MainActivity  onCreate");
 
         setContentView(R.layout.activity_main);
 
@@ -29,5 +33,17 @@ public class MainActivity extends BasePluginActivity {
                 startActivity(intent);
             }
         });
+
+        subTitle = (TextView) findViewById(R.id.sub_title);
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Log.d("JLu", "plugin: MainActivity  onNewIntent + intent= " + intent);
+        String msg = intent.getStringExtra("msg");
+        subTitle.setText("onNewIntent 接收消息：" + msg);
     }
 }

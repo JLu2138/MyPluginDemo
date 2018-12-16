@@ -12,12 +12,22 @@
         android:textSize="18sp"
         android:layout_centerHorizontal="true"/>
 
+    <TextView
+        android:id="@+id/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/title"
+        android:text="onNewIntent 接收消息：null"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:id="@+id/btn_jump"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title"
+        android:layout_below="@id/sub_title"
         android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
         android:text="点击跳转 plugin1：TestActivity1"/>

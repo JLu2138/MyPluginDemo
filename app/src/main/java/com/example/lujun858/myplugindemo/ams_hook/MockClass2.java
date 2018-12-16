@@ -6,6 +6,8 @@ import android.os.Message;
 
 import com.example.mypluginlibrary.RefInvoke;
 
+import java.util.ArrayList;
+
 class MockClass2 implements Handler.Callback {
 
     Handler mBase;
@@ -23,11 +25,34 @@ class MockClass2 implements Handler.Callback {
             case 100:
                 handleLaunchActivity(msg);
                 break;
+            case 112:
+                handleNewIntent(msg);
+                break;
         }
 
         mBase.handleMessage(msg);
         return true;
     }
+
+    private void handleNewIntent(Message msg) {
+        Object obj = msg.obj;
+        ArrayList intents = (ArrayList) RefInvoke.getFieldObject(obj, "intents");
+
+        for(Object object : intents) {
+            Intent raw = (Intent)object;
+            Intent target = raw.getParcelableExtra(AMSHookHelper.EXTRA_TARGET_INTENT);
+            if(target != null) {
+                raw.setComponent(target.getComponent());
+
+                if(target.getExtras() != null) {
+                    raw.putExtras(target.getExtras());
+                }
+
+                break;
+            }
+        }
+    }
+
 
     private void handleLaunchActivity(Message msg) {
         // 这里简单起见,直接取出TargetActivity; 应该先判断是否是启动插件 Activity
