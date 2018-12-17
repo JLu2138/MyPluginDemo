@@ -17,6 +17,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".TestActivity1"/>
+
+        <service android:name=".TestService1"/>
+        <service android:name=".TestService2"/>
+
     </application>
 
 </manifest>

@@ -44,12 +44,20 @@ public class PluginManager {
             ArrayList<String> pluginPaths = new ArrayList<String>();
             for (String path : paths) {
                 if (path.endsWith(".apk")) {
+
                     String apkName = path;
                     String dexName = apkName.replace(".apk", ".dex");
+
                     //模拟下载到本地
                     Utils.extractAssets(mBaseContext, apkName);
+
                     //合并宿主和插件 dex
                     mergeDexs(apkName, dexName);
+
+                    //解析插件中的Service组件
+                    File dexFile = mBaseContext.getFileStreamPath(apkName);
+                    ServiceManager.getInstance().preLoadServices(dexFile);
+
                     //提取插件信息存储
                     PluginItem item = generatePluginItem(apkName);
                     plugins.add(item);

@@ -13,6 +13,7 @@ public class HostApplication extends Application {
     private static Context sContext;
     private String apkName = "plugin1.apk";    //apk名称
 
+    // 插件 Activity 与宿主中的占位 Activity 映射关系集合
     public static HashMap<String, String> pluginActiviesMap = new HashMap<>();
 
 
