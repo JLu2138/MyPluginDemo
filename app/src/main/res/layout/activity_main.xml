@@ -57,6 +57,14 @@
         android:textAllCaps="true"
         android:text="send Broadcast to plugin1"/>
 
+    <Button
+        android:id="@+id/btn_provider_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="true"
+        android:text="invoke TestProvider1: delete"/>
+
 
 
     <ImageView

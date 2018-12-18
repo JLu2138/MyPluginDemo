@@ -42,6 +42,11 @@
             <meta-data android:name="oldAction" android:value="com.stub.action2"></meta-data>
         </receiver>
 
+        <provider
+            android:authorities="plugin1"
+            android:name=".TestProvider1"
+            android:exported="true"/>
+
     </application>
 
 </manifest>

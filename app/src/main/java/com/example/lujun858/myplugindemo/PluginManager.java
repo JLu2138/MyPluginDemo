@@ -62,6 +62,8 @@ public class PluginManager {
                     //解析插件 AndroidManifest 中注册的静态广播
                     ReceiverManager.preLoadReceiver(mBaseContext, apkFile);
 
+                    //安装插件中的Providers
+                    ProviderHelper.installProviders(mBaseContext, apkFile);
 
                     //提取插件信息存储
                     PluginItem item = generatePluginItem(apkName);
