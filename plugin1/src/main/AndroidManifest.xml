@@ -23,6 +23,25 @@
         <service android:name=".TestService1"/>
         <service android:name=".TestService2"/>
 
+        <receiver
+            android:name=".TestReceiver1"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.plugin1.action1" />
+            </intent-filter>
+            <meta-data android:name="oldAction" android:value="com.stub.action1"></meta-data>
+        </receiver>
+        <receiver
+            android:name=".TestReceiver2"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.plugin1.action2" />
+            </intent-filter>
+            <meta-data android:name="oldAction" android:value="com.stub.action2"></meta-data>
+        </receiver>
+
     </application>
 
 </manifest>

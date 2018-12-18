@@ -54,9 +54,14 @@ public class PluginManager {
                     //合并宿主和插件 dex
                     mergeDexs(apkName, dexName);
 
+                    File apkFile = mBaseContext.getFileStreamPath(apkName);
+
                     //解析插件中的Service组件
-                    File dexFile = mBaseContext.getFileStreamPath(apkName);
-                    ServiceManager.getInstance().preLoadServices(dexFile);
+                    ServiceManager.getInstance().preLoadServices(apkFile);
+
+                    //解析插件 AndroidManifest 中注册的静态广播
+                    ReceiverManager.preLoadReceiver(mBaseContext, apkFile);
+
 
                     //提取插件信息存储
                     PluginItem item = generatePluginItem(apkName);

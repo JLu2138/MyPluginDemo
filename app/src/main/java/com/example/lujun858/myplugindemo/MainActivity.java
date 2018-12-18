@@ -2,8 +2,11 @@ package com.example.lujun858.myplugindemo;
 
 import android.app.Activity;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -21,9 +24,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Button stopServiceBtn;
     private Button bindServiceBtn;
     private Button unbindServiceBtn;
+    private Button sendBroadcastBtn;
     private ImageView imgView;
 
     private ServiceConnection conn;
+
+    private BroadcastReceiver receiver;
+    private static final String ACTION = "com.host.action";
 
 
     @Override
@@ -41,6 +48,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         bindServiceBtn.setOnClickListener(this);
         unbindServiceBtn = (Button) findViewById(R.id.btn_unbind_service);
         unbindServiceBtn.setOnClickListener(this);
+        sendBroadcastBtn = (Button) findViewById(R.id.btn_send_broadcast);
+        sendBroadcastBtn.setOnClickListener(this);
 
         conn = new ServiceConnection() {
             @Override
@@ -63,6 +72,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         };
 
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Toast.makeText(context, "host 收到广播，握手完成!", Toast.LENGTH_SHORT).show();
+
+            }
+        };
+        registerReceiver(receiver, new IntentFilter(ACTION));
 
 
       /*  imgView = (ImageView) findViewById(R.id.img);
@@ -113,6 +131,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.btn_unbind_service:
                 unbindService(conn);
+                break;
+            case R.id.btn_send_broadcast:
+                Toast.makeText(getApplicationContext(), "插件插件!收到请回答!!", Toast.LENGTH_SHORT).show();
+                intent = new Intent("com.stub.action1");
+                intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+                sendBroadcast(intent);
                 break;
             default:
                 break;

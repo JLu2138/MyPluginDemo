@@ -11,6 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        
+        <!--Activity-->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +24,45 @@
         <activity android:name=".stub.SingleTaskActivity1"
             android:launchMode="singleTask"/>
 
+        <!--Service-->
         <service android:name=".stub.ProxyService"/>
+
+        <!--Receiver-->
+        <receiver
+            android:name=".stub.StubReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.stub.action1" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.stub.action2" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.stub.action3" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.stub.action4" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.stub.action5" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.stub.action6" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.stub.action7" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.stub.action8" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.stub.action9" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.stub.action10" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

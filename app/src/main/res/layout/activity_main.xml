@@ -48,6 +48,17 @@
         android:textAllCaps="true"
         android:text="unbind TestService2"/>
 
+
+    <Button
+        android:id="@+id/btn_send_broadcast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="true"
+        android:text="send Broadcast to plugin1"/>
+
+
+
     <ImageView
         android:id="@+id/img"
         android:layout_width="wrap_content"
