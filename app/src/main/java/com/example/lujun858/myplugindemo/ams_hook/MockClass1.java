@@ -75,8 +75,9 @@ class MockClass1 implements InvocationHandler {
             return method.invoke(mBase, args);
 
         } else if ("startService".equals(method.getName())) {
-            // 只拦截这个方法
-            // 替换参数, 任你所为;甚至替换原始ProxyService启动别的Service偷梁换柱
+            /**
+             * 替换要启动的插件 Service 信息为 StubService信息
+             */
 
             // 找到参数里面的第一个Intent 对象
             int index = 0;
@@ -87,7 +88,7 @@ class MockClass1 implements InvocationHandler {
                 }
             }
 
-            //get ProxyService form UPFApplication.pluginServices
+            //get ProxyService form Application.pluginServices
             Intent rawIntent = (Intent) args[index];
 
             // 代理Service的包名, 也就是我们自己的包名
@@ -161,7 +162,7 @@ class MockClass1 implements InvocationHandler {
             return method.invoke(mBase, args);
 
         } else if("unbindService".equals(method.getName())) {
-
+            //以 conn 为 key 得到绑定的 Intent，ServiceManager通过 intent找到对应的 Service 解绑
             Intent rawIntent = ServiceManager.getInstance().mServiceMap2.get(args[0]);
             ServiceManager.getInstance().onUnbind(rawIntent);
             return method.invoke(mBase, args);

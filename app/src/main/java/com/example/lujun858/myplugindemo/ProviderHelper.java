@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author weishu
- * @date 16/7/8.
  */
 public class ProviderHelper {
 

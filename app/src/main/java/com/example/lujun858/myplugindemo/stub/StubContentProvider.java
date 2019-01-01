@@ -53,12 +53,12 @@ public class StubContentProvider extends ContentProvider {
      *
      * 原始查询插件的URI应该为：
      * content://host_auth/plugin_auth/path/query
-     * 例子 content://baobao222/jianqiang
+     * 例子 content://host/plugin1
      *
      * 如果需要查询插件，替换为：
      *
      * content://plugin_auth/path/query
-     * 例子 content://jianqiang
+     * 例子 content://plugin1
      *
      * 也就是，我们把插件ContentProvider的信息放在URI的path中保存起来；
      * 然后在StubProvider中做分发。
