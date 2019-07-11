@@ -10,6 +10,10 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        ndk{
+            moduleName "hello" //32 位虚拟机占位 so
+            abiFilters "armeabi"
+        }
     }
     buildTypes {
         release {
@@ -20,6 +24,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+//    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':mypluginlibrary')
+//    provided files("libs/faker.jar")
 }

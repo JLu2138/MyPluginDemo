@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.mypluginlibrary.RefInvoke;
 
@@ -11,6 +13,8 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import dalvik.system.DexClassLoader;
 
 public class PluginManager {
 
@@ -47,14 +51,36 @@ public class PluginManager {
 
                     String apkName = path;
                     String dexName = apkName.replace(".apk", ".dex");
+                    // getFileStreamPath 返回 data/.../data/ 下名为 apkName 的文件，没有会自动创建
+                    File apkFile = mBaseContext.getFileStreamPath(apkName);
+                    File dexFile = mBaseContext.getFileStreamPath(dexName);
 
                     //模拟下载到本地
                     Utils.extractAssets(mBaseContext, apkName);
 
                     //合并宿主和插件 dex
-                    mergeDexs(apkName, dexName);
+                    mergeDexs(apkFile, dexFile);
 
-                    File apkFile = mBaseContext.getFileStreamPath(apkName);
+
+                    //解析插件 apk 的 so 到本地并返回由逗号分割的一组so的路径
+                    /** libPaths = "/data/user/0/com.example.lujun858.myplugindemo/files/lib/armeabi" **/
+                    String libPaths = Utils.UnzipSpecificFile(apkFile, apkFile.getParent());
+                    Log.d("JLu", "libPaths=" + libPaths);
+
+                    //合并宿主和插件的 so 路径集
+                    if (!TextUtils.isEmpty(libPaths)) {
+                        /** getDir 返回 data/.../data/ 下的 "app_dex" 目录（没有会自动创建，默认以 app_ 开头）**/
+                        File fileRelease = mBaseContext.getDir("dex", Context.MODE_PRIVATE);
+
+                        /**
+                         * 利用 DexClassLoader 的构造方法生成 DexPathList 中的 Element[] nativeLibraryPathElements
+                         */
+                        DexClassLoader classLoader = new DexClassLoader(apkFile.getPath(),
+                                fileRelease.getAbsolutePath(), libPaths, mBaseContext.getClassLoader());
+                        BaseDexClassLoaderHookHelper.insertNativeLibrary(classLoader, mBaseContext.getClassLoader(), new File(libPaths));
+
+                    }
+
 
                     //解析插件中的Service组件
                     ServiceManager.getInstance().preLoadServices(apkFile);
@@ -66,7 +92,7 @@ public class PluginManager {
                     ProviderHelper.installProviders(mBaseContext, apkFile);
 
                     //提取插件信息存储
-                    PluginItem item = generatePluginItem(apkName);
+                    PluginItem item = generatePluginItem(apkFile);
                     plugins.add(item);
 
                     //得到所有插件路径
@@ -84,13 +110,12 @@ public class PluginManager {
 
     /**
      * 提取插件 apk 的信息，用 PluginItem 实例保存
-     * @param apkName
+     * @param apkFile
      * @return
      */
-    private static PluginItem generatePluginItem(String apkName) {
-        File file = mBaseContext.getFileStreamPath(apkName);
+    private static PluginItem generatePluginItem(File apkFile) {
         PluginItem item = new PluginItem();
-        item.pluginPath = file.getAbsolutePath();
+        item.pluginPath = apkFile.getAbsolutePath();
         item.packageInfo = DLUtils.getPackageInfo(mBaseContext, item.pluginPath);
 
         return item;
@@ -99,13 +124,10 @@ public class PluginManager {
     /**
      * 合并宿主和插件的 dexElements 数组，并重设到宿主的 BaseDexClassLoader 中
      * todo 收集完所有插件的 apk 路径后再一次性替换，提高效率
-     * @param apkName
-     * @param dexName
+     * @param dexFile
+     * @param optDexFile
      */
-    static void mergeDexs(String apkName, String dexName) {
-
-        File dexFile = mBaseContext.getFileStreamPath(apkName);
-        File optDexFile = mBaseContext.getFileStreamPath(dexName);
+    static void mergeDexs(File dexFile, File optDexFile) {
 
         try {
             BaseDexClassLoaderHookHelper.patchClassLoader(mBaseContext.getClassLoader(), dexFile, optDexFile);

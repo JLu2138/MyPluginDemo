@@ -1,6 +1,7 @@
 package com.example.lujun858.myplugindemo.ams_hook;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
@@ -64,8 +65,13 @@ class MockClass2 implements Handler.Callback {
 
         Intent target = raw.getParcelableExtra(AMSHookHelper.EXTRA_TARGET_INTENT);
         if (target != null) {
-            //说明不是启动插件 Activity
+            //说明是启动插件 Activity
             raw.setComponent(target.getComponent());
+            //需要讲原有的 Extra 参数重新填充
+            Bundle bundle = target.getExtras();
+            if (bundle != null) {
+                raw.putExtras(bundle);
+            }
         }
     }
 

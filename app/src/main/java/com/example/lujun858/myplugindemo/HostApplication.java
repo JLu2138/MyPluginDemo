@@ -2,6 +2,7 @@ package com.example.lujun858.myplugindemo;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.example.lujun858.myplugindemo.ams_hook.AMSHookHelper;
 
@@ -11,7 +12,7 @@ public class HostApplication extends Application {
 
 
     private static Context sContext;
-    private String apkName = "plugin1.apk";    //apk名称
+//    private String apkName = "plugin1.apk";    //apk名称
 
     // 插件 Activity 与宿主中的占位 Activity 映射关系集合
     public static HashMap<String, String> pluginActiviesMap = new HashMap<>();
@@ -42,6 +43,8 @@ public class HostApplication extends Application {
             //hook ActivityThread
             AMSHookHelper.hookActivityThread();
 
+            //Launch 32-bit vm by loading a stub so
+            Log.d("JLu", "start 32-bit vm:" + JniUtils.getString());
 
         } catch (Throwable e) {
             e.printStackTrace();
