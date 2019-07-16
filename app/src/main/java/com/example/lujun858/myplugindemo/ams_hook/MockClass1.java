@@ -51,9 +51,16 @@ class MockClass1 implements InvocationHandler {
 
 
             // 这里我们把启动的Activity临时替换为 StubActivity, 查询映射表找到插件 Activity 对应的 LaunchModeActivity，没有就默认使用 StubActivity
+
+            ComponentName rawComponentName = raw.getComponent();
+            // 如果是 checkPermission 也会走到这但是 componentName 为 null
+            if (rawComponentName == null) {
+                return method.invoke(mBase, args);
+            }
+
             ComponentName componentName;
 
-            String rawClass = raw.getComponent().getClassName();
+            String rawClass = rawComponentName.getClassName();
             if(HostApplication.pluginActiviesMap.containsKey(rawClass)) {
                 String activity = HostApplication.pluginActiviesMap.get(rawClass);
                 componentName = new ComponentName(STUB_ACTIVITY_PACKAGENAME, activity);
